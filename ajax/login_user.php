@@ -15,6 +15,16 @@
 	
 	if($id != -1) {
 		$_SESSION['user'] = $id;
+
+		// сесиия
+
+		$Ip = $_SERVER["REMOTE_ADDR"];
+		$DateStart = date("Y-m-d H:i:s");
+
+		$Sql = "INSERT INTO `logs`(`IdUser`, `Ip`, `DateStart`, `DateNow`) 
+			VALUES ({$id},'{$Ip}','{$DateStart}','{$DateStart}')";
+		$mysqli->query($Sql);
+		// событие авторизацйии
 	}
 	echo md5(md5($id));
 ?>
