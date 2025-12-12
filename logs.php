@@ -71,7 +71,42 @@
 		</div>
 		
 		<script>
-			
+			GetEvents();
+			function GetEvents(){
+				$.ajax({
+					url         : 'ajax/events/get.php',
+					type        : 'POST', // важно!
+					data        : null,
+					cache       : false,
+					dataType    : 'html',
+					processData : false,
+					contentType : false, 
+					success: GetEventsAjax,
+					// функция ошибки
+					error: function( ){
+						console.log('Системная ошибка!');
+						
+					}
+				});
+			}
+
+			function GetEventsAjax(_data){
+				console.log(_data);
+
+				let $Table = $("table > tbody");
+				let events = JSON.parse(_data);
+
+				events.forEach((event)=>{
+					$Table.append(`
+					<tr>
+						<td>${event["Date"]}</td>
+						<td>${event["Ip"]}</td>
+						<td>${event["TimeOnline"]}</td>
+						<td>${event["Status"]}</td>
+						<td style = "text-align: left;">${event["Event"]}</td>
+					</tr>`)
+				})
+			}
 		</script>
 	</body>
 </html>
