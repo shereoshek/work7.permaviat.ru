@@ -23,6 +23,16 @@
 		<title> Admin панель </title>
 		
 		<link rel="stylesheet" href="style.css">
+		<style>
+			table{
+				width: 100%;
+			}
+
+			td{
+				text-align:center;
+				padding: 7px;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="top-menu">
@@ -42,7 +52,15 @@
 				
 				<div class="name">Журнал событий</div>
 			
-				Административная панель служит для создания, редактирования и удаления записей на сайте.
+				<table border="1">
+					<tr>
+						<td style="width: 165px">Дата и время</td>
+						<td style="width: 165px">Ip</td>
+						<td style="width: 165px">Время в сети</td>
+						<td style="width: 165px">Статус</td>
+						<td style="width: 165px">Событие</td>
+					</tr>
+				</table>
 			
 				<div class="footer">
 					© КГАПОУ "Авиатехникум", 2020

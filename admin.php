@@ -43,13 +43,15 @@
 				<div class="name">Административная панель</div>
 			
 				Административная панель служит для создания, редактирования и удаления записей на сайте.
+
+				<a href="./logs.php">Просмотреть логи</a>
 			
 				<?
 					$Sql = "SELECT * FROM `session` WHERE `IdUser`={$_SESSION["user"]} ORDER BY `DateStart` DESC";
 					$Query= $mysqli->query($Sql);
 					if($Query->num_rows > 1){
 						$Read = $Query->fetch_assoc();
-						$Read = $Query->fetch_assoc();
+						$Read = $Query->fetch_assoc(); //задать вопрос почему два раза в видосе не сказано
 
 						$TimeEnd = strtotime($Read["DateNow"]);
 						$TimeNow = time();
@@ -57,6 +59,19 @@
 						$TimeDelta = round(($TimeNow - $TimeEnd)/60);
 						echo "<br>Последняя активная сессия была: {$TimeDelta} минут назад";
 					}
+
+					// вывод последней длительности сессии
+
+					$Sql = "SELECT * FROM `logs` WHERE `IdUser`={$_SESSION["user"]} ORDER BY `Date` DESC";
+					$Query= $mysqli->query($Sql);
+					if($Query->num_rows > 1){
+						$Read = $Query->fetch_assoc();
+						$Read = $Query->fetch_assoc(); //задать вопрос почему два раза в видосе не сказано
+
+						$TimeOnline = $Read["TimeOnline"];
+						echo "<br>Длина последней сессии была: {$TimeOnline} минут ";
+					}
+
 				?>
 
 				<div class="footer">

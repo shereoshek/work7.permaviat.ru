@@ -67,6 +67,16 @@
 							$TimeDelta = round(($TimeNow - $TimeEnd)/60);
 							echo "<br>Последняя активная сессия была: {$TimeDelta} минут назад";
 						}
+
+						$Sql = "SELECT * FROM `logs` WHERE `IdUser`={$_SESSION["user"]} ORDER BY `Date` DESC";
+						$Query= $mysqli->query($Sql);
+						if($Query->num_rows > 1){
+							$Read = $Query->fetch_assoc();
+							$Read = $Query->fetch_assoc(); //задать вопрос почему два раза в видосе не сказано
+
+							$TimeOnline = $Read["TimeOnline"];
+							echo "<br>Длина последней сессии была: {$TimeOnline} минут ";
+						}
 					?>
 				</div>
 			
