@@ -53,13 +53,18 @@
 				<div class="name">Журнал событий</div>
 			
 				<table border="1">
-					<tr>
-						<td style="width: 165px">Дата и время</td>
-						<td style="width: 165px">Ip</td>
-						<td style="width: 165px">Время в сети</td>
-						<td style="width: 165px">Статус</td>
-						<td style="width: 165px">Событие</td>
-					</tr>
+					<thead>
+						<tr>
+							<td style="width: 165px"><button onclick="date_sort()">Дата и время</button></td>
+							<td style="width: 165px"><button onclick="ip_sort()">Ip</button></td>
+							<td style="width: 165px"><button onclick="time_sort()">Время в сети</button></td>
+							<td style="width: 165px">Статус</td>
+							<td style="width: 165px">Событие</td>
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
 				</table>
 			
 				<div class="footer">
@@ -93,7 +98,7 @@
 			function GetEventsAjax(_data){
 				console.log(_data);
 
-				let $Table = $("table > tbody");
+				let $Table = $("tbody");
 				let events = JSON.parse(_data);
 
 				events.forEach((event)=>{
@@ -106,6 +111,132 @@
 						<td style = "text-align: left;">${event["Event"]}</td>
 					</tr>`)
 				})
+			}
+
+			function date_sort(){
+
+				$.ajax({
+					url         : 'ajax/events/get.php',
+					type        : 'POST', // важно!
+					data        : null,
+					cache       : false,
+					dataType    : 'html',
+					processData : false,
+					contentType : false, 
+					success: function(_data){
+						let Table = $("tbody");
+						Table.empty();
+						let events = JSON.parse(_data);
+
+						events = events.sort((first, second)=>{
+							return new Date(first["Date"])  - new Date(second["Date"]);
+						})
+						
+						events.forEach((event)=>{
+							Table.append(`
+							<tr>
+								<td>${event["Date"]}</td>
+								<td>${event["Ip"]}</td>
+								<td>${event["TimeOnline"]}</td>
+								<td>${event["Status"]}</td>
+								<td style = "text-align: left;">${event["Event"]}</td>
+							</tr>`)
+						})
+					},
+					// функция ошибки
+					error: function( ){
+						console.log('Системная ошибка!');
+						
+					}
+				});
+			}
+
+			function ip_sort(){
+				$.ajax({
+					url         : 'ajax/events/get.php',
+					type        : 'POST', // важно!
+					data        : null,
+					cache       : false,
+					dataType    : 'html',
+					processData : false,
+					contentType : false, 
+					success: function(_data){
+						let Table = $("tbody");
+						Table.empty();
+						let events = JSON.parse(_data);
+
+						events = events.sort((first, second)=>{
+							let ipFirst= first["Ip"].split('.').map(Number);
+							let ipSecond= second["Ip"].split('.').map(Number);
+							for(let i = 0; i<4;i++){
+								if(ipFirst[i]!==ipSecond[i]){
+									return ipFirst[i]-ipSecond[i];
+								}
+							}
+							return 0;
+						})
+						
+						events.forEach((event)=>{
+							Table.append(`
+							<tr>
+								<td>${event["Date"]}</td>
+								<td>${event["Ip"]}</td>
+								<td>${event["TimeOnline"]}</td>
+								<td>${event["Status"]}</td>
+								<td style = "text-align: left;">${event["Event"]}</td>
+							</tr>`)
+						})
+					},
+					// функция ошибки
+					error: function( ){
+						console.log('Системная ошибка!');
+						
+					}
+				});
+			}
+
+			function time_sort(){
+				$.ajax({
+					url         : 'ajax/events/get.php',
+					type        : 'POST', // важно!
+					data        : null,
+					cache       : false,
+					dataType    : 'html',
+					processData : false,
+					contentType : false, 
+					success: function(_data){
+						let Table = $("tbody");
+						Table.empty();
+						let events = JSON.parse(_data);
+
+						events = events.sort((first, second)=>{
+							let ipFirst= first["TimeOnline"].split(':').map(Number);
+							let ipSecond= second["TimeOnline"].split(':').map(Number);
+							for(let i = 0; i<3;i++){
+								if(ipFirst[i]!==ipSecond[i]){
+									return ipFirst[i]-ipSecond[i];
+								}
+							}
+							return 0;
+						})
+						
+						events.forEach((event)=>{
+							Table.append(`
+							<tr>
+								<td>${event["Date"]}</td>
+								<td>${event["Ip"]}</td>
+								<td>${event["TimeOnline"]}</td>
+								<td>${event["Status"]}</td>
+								<td style = "text-align: left;">${event["Event"]}</td>
+							</tr>`)
+						})
+					},
+					// функция ошибки
+					error: function( ){
+						console.log('Системная ошибка!');
+						
+					}
+				});
 			}
 		</script>
 	</body>

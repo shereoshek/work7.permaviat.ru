@@ -1,7 +1,7 @@
 <?php
     require_once("../../settings/connect_datebase.php");
-
-    $sql= "SELECT * FROM `logs` ORDER BY `Date` DESC LIMIT 10";
+    
+    $sql= "SELECT * FROM `logs` ORDER BY `Date` DESC";
     $query = $mysqli->query($sql);
 
     $events = array();
