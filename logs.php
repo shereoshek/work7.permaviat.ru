@@ -113,6 +113,24 @@
 				})
 			}
 
+			function logout() {
+				$.ajax({
+					url         : 'ajax/logout.php',
+					type        : 'POST', // важно!
+					data        : null,
+					cache       : false,
+					dataType    : 'html',
+					processData : false,
+					contentType : false, 
+					success: function (_data) {
+						location.reload();
+					},
+					error: function( ){
+						console.log('Системная ошибка!');
+					}
+				});
+			}
+
 			function date_sort(){
 
 				$.ajax({
