@@ -40,6 +40,15 @@
 		$mysqli->query("UPDATE `users` SET `password`='".md5($password)."' WHERE `login` = '".$login."'");
 		// отсылаем на почту
 		//mail($login, 'Безопасность web-приложений КГАПОУ "Авиатехникум"', "Ваш пароль был только что изменён. Новый пароль: ".$password);
+
+		$Ip = $_SERVER["REMOTE_ADDR"];
+		$DateStart = date("Y-m-d H:i:s");
+		
+		// событие смены
+
+		$Sql = "INSERT INTO `logs`(`Ip`, `IdUser`, `Date`, `TimeOnline`, `Event`)
+		VALUES ('{$Ip}',{$id},'{$DateStart}','00:00:00','Пользователь {$login} Сменил пароль')";
+		$mysqli->query($Sql);
 	}
 	
 	echo $id;
