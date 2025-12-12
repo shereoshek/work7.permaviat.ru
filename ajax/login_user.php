@@ -21,10 +21,20 @@
 		$Ip = $_SERVER["REMOTE_ADDR"];
 		$DateStart = date("Y-m-d H:i:s");
 
-		$Sql = "INSERT INTO `logs`(`IdUser`, `Ip`, `DateStart`, `DateNow`) 
+		$Sql = "INSERT INTO `session`(`IdUser`, `Ip`, `DateStart`, `DateNow`) 
 			VALUES ({$id},'{$Ip}','{$DateStart}','{$DateStart}')";
 		$mysqli->query($Sql);
-		// событие авторизацйии
+
+		$Sql = "SELECT `Id` FROM `session` WHERE `DateStart`='{$DateStart}';";
+		$Query = $mysqli->query($Sql);
+		$Read = $Query->fetch_assoc();
+		$_SESSION["IdSession"] = $Read["Id"];
+		
+		// событие авторизации
+
+		$Sql = "INSERT INTO `logs`(`Ip`, `IdUser`, `Date`, `TimeOnline`, `Event`)
+		VALUES ('{$Ip}',{$id},'{$DateStart}','00:00:00','Пользователь {$login} авторизовался')";
+		$mysqli->query($Sql);
 	}
 	echo md5(md5($id));
 ?>
